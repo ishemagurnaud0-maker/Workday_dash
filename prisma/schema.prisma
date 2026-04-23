@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+
+//Owner Schema 
+
+model User{
+  id String @id @default(cuid())
+  name String
+  phoneNumber String
+  email String @unique
+  password String
+  imgUrl String?
+  companyId String?
+  isVerified  Boolean  @default(false)
+  company Company? @relation(fields: [companyId], references: [id])            
+  createdAt DateTime @default(now())
+}
+
+
+
+
+
+model Company{
+  id String @id @default(cuid())  
+  companyName String
+  user User[]
+  employee Employee[]
+  companyPhone String
+  companyEmail String @unique
+  departments Department[]
+  createdAt DateTime @default(now())
+}
+ 
+// Employee Schema
+
+model Employee{
+  id String @id @default(cuid())
+  name String
+  email String @unique
+  password String
+  phoneNumber String
+  salary Float?
+  payroll Payroll[]
+  companyId String
+  company Company @relation(fields: [companyId], references: [id])
+  departmentId String?
+  department Department? @relation(fields: [departmentId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+//Payroll schema
+
+model Payroll{
+  id String @id @default(cuid())
+  employeeId String
+  employee Employee @relation(fields: [employeeId], references: [id])
+  amount Float
+  currency String?
+  paymentDate DateTime 
+  createdAt DateTime @default(now())
+}
+
+
+model Department{
+  id String @id @default(cuid())
+  name String
+  employees Employee[]
+  companyId String
+  company Company @relation(fields: [companyId], references: [id])
+  createdAt DateTime @default(now())
+}
