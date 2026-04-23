@@ -7,6 +7,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { CacheModule } from '@nestjs/cache-manager';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { DepartmentsModule } from './modules/departments/departments.module';
+import { UsersModule } from './modules/users/users.module'
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { DepartmentsModule } from './modules/departments/departments.module';
     }),
     PrismaModule,
     AuthModule,
-    DepartmentsModule
+    DepartmentsModule,
+    UsersModule
   ],
 
   providers:[{

@@ -58,7 +58,7 @@ export class AuthService {
 
     }
 
-    async verifyOtp(dto:VerifyOtpDto){
+     async verifyOtp(dto:VerifyOtpDto){
         
         const user = await this.prisma.user.findUnique({
             where:{
