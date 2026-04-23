@@ -24,6 +24,7 @@ export class AuthController {
   }
 
   @Public()
+  @UseGuards()
   @Post('login')
    async login(@Body() loginCreds:LoginDto ) {
     return this.authService.login(loginCreds);
