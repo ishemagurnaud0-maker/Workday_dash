@@ -1,11 +1,13 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import {ValidationPipe} from '@nestjs/common'
+import {ClassSerializerInterceptor, ValidationPipe} from '@nestjs/common'
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule,{
+    rawBody:true,
+  });
 
   app.useGlobalPipes(new ValidationPipe(
     {
@@ -15,7 +17,10 @@ async function bootstrap() {
     }
   ));
 
-  app.useGlobalInterceptors(new ResponseInterceptor());
+  app.useGlobalInterceptors(
+    new ClassSerializerInterceptor(app.get(Reflector)),
+    new ResponseInterceptor()
+  );
 
   app.useGlobalFilters(new HttpExceptionFilter());
 
@@ -24,5 +29,6 @@ async function bootstrap() {
   app.enableCors();
   app.setGlobalPrefix('api');
   await app.listen(process.env.PORT ?? 3000);
+  console.log(`App-server is running on port ${process.env.PORT}`)
 }
 bootstrap();
