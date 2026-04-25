@@ -37,6 +37,7 @@ model Company {
   companyEmail String @unique
   departments Department[]
   channels Channel[]
+  meetings Meeting[]
   createdAt DateTime @default(now())
 }
  
@@ -98,5 +99,16 @@ model Message {
   channel Channel @relation(fields: [channelId], references: [id])
   sender User @relation(fields: [senderId], references: [id])
   meetingLink String?
+  createdAt DateTime @default(now())
+}
+
+model Meeting {
+  id String @id @default(cuid())
+  title String
+  link String
+  scheduledAt DateTime
+  departmentId String?
+  companyId String
+  company  Company  @relation(fields: [companyId], references: [id])
   createdAt DateTime @default(now())
 }
