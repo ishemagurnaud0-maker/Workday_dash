@@ -10,6 +10,7 @@ import { DepartmentsModule } from './modules/departments/departments.module';
 import { UsersModule } from './modules/users/users.module'
 import { ChatsModule } from './modules/chats/chats.module';
 import { MeetingsModule } from './modules/meetings/meetings.module';
+import { NotificationsModule } from './modules/notifications/notifications.module'
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { MeetingsModule } from './modules/meetings/meetings.module';
     DepartmentsModule,
     UsersModule,
     ChatsModule,
-    MeetingsModule
+    MeetingsModule,
+    NotificationsModule
   ],
 
   providers:[{
