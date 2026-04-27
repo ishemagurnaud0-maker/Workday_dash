@@ -113,25 +113,11 @@ npm run build
 npm run start:prod
 ```
 
-Server runs on `http://localhost:3000/api`
-
+Server runs on `http://localhost:9000/api`
+Swaggwer api docs on `http://localhost:9000/api/docs#/`
 ---
 
-## Database Schema
 
-```prisma
-User          → Owner of a company
-Company       → Organization
-Employee      → Staff member of a company
-Department    → Division within a company
-Payroll       → Salary payment record
-Channel       → Chat channel
-Message       → Chat message
-Meeting       → Scheduled meeting
-Notification  → Real time notification
-```
-
----
 
 ## API Endpoints
 
