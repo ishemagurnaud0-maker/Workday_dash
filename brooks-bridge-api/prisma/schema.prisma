@@ -12,10 +12,9 @@ datasource db {
   url = env("DATABASE_URL")
 }
 
-
 //Owner Schema 
 
-model User{
+model User {
   id String @id @default(cuid())
   name String
   phoneNumber String
@@ -23,16 +22,13 @@ model User{
   password String
   imgUrl String?
   companyId String?
-  isVerified  Boolean  @default(false)
-  company Company? @relation(fields: [companyId], references: [id])            
+  isVerified Boolean @default(false)
+  company Company? @relation(fields: [companyId], references: [id])
+  messages Message[]            
   createdAt DateTime @default(now())
 }
 
-
-
-
-
-model Company{
+model Company {
   id String @id @default(cuid())  
   companyName String
   user User[]
@@ -40,12 +36,14 @@ model Company{
   companyPhone String
   companyEmail String @unique
   departments Department[]
+  channels Channel[]
+  meetings Meeting[]
   createdAt DateTime @default(now())
 }
  
 // Employee Schema
 
-model Employee{
+model Employee {
   id String @id @default(cuid())
   name String
   email String @unique
@@ -63,18 +61,18 @@ model Employee{
 
 //Payroll schema
 
-model Payroll{
+model Payroll {
   id String @id @default(cuid())
   employeeId String
   employee Employee @relation(fields: [employeeId], references: [id])
   amount Float
   currency String?
-  paymentDate DateTime 
+  status String? @default("Not Paid")
+  paymentDate DateTime
   createdAt DateTime @default(now())
 }
 
-
-model Department{
+model Department {
   id String @id @default(cuid())
   name String
   employees Employee[]
@@ -82,3 +80,52 @@ model Department{
   company Company @relation(fields: [companyId], references: [id])
   createdAt DateTime @default(now())
 }
+
+model Channel {
+  id String @id @default(cuid())
+  name String
+  companyId String
+  company Company @relation(fields: [companyId], references: [id])
+  messages Message[]
+  createdAt DateTime @default(now())
+}
+
+
+model Message {
+  id String @id @default(cuid())
+  content String
+  channelId String
+  senderId String
+  channel Channel @relation(fields: [channelId], references: [id])
+  sender User @relation(fields: [senderId], references: [id])
+  meetingLink String?
+  createdAt DateTime @default(now())
+}
+
+model Meeting {
+  id String @id @default(cuid())
+  title String
+  link String
+  scheduledAt DateTime
+  departmentId String?
+  companyId String
+  company  Company  @relation(fields: [companyId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id String @id @default(cuid())
+  userId String
+  message String
+  type NotificationType
+  isRead Boolean @default(false)
+  createAt DateTime @default(now())
+}
+
+enum NotificationType {
+  MEETING
+  MESSAGE
+  PAYMENT
+  GENERAL
+}
+

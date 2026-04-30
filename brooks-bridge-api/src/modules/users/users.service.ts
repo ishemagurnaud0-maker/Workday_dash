@@ -10,11 +10,13 @@ import { Cache } from 'cache-manager';
 import { Inject } from '@nestjs/common';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 import { UpdateEmailDto } from './dto/update-email.dto';
+import { NotificationsService } from '../notifications/notifications.service';
+
 
 @Injectable()
 export class UsersService {
   
-    constructor(private prisma:PrismaService,private emailOtpService:EmailOtpService, @Inject(CACHE_MANAGER) private cacheManager: Cache){}
+    constructor(private prisma:PrismaService,private emailOtpService:EmailOtpService, @Inject(CACHE_MANAGER) private cacheManager: Cache,private notificationsService:NotificationsService){}
 
 
     //--create Employee---
@@ -45,6 +47,13 @@ export class UsersService {
                 department:true
             }
         });
+
+        await this.notificationsService.notifyCompany(
+            companyId,
+            `New employee added : ${dto.name}`,
+            'EMPLOYEE'
+            
+        );
 
         const { password, ...employeeWithoutPassWord} = newEmployee;
 

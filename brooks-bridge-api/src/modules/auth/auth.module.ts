@@ -17,5 +17,6 @@ import { EmailOtpService } from './email-otp.service'
 
   controllers: [AuthController],
   providers: [AuthService,JwtStrategy,EmailOtpService],
+  exports: [EmailOtpService],
 })
 export class AuthModule {}
