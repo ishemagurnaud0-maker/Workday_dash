@@ -1,0 +1,27 @@
+import { PrismaService } from '../../../prisma/prisma.service';
+declare const JwtStrategy_base: new (...args: any) => any;
+export declare class JwtStrategy extends JwtStrategy_base {
+    private readonly prisma;
+    constructor(prisma: PrismaService);
+    validate(payload: {
+        sub: string;
+        email: string;
+    }): Promise<{
+        company: {
+            companyName: string;
+            companyEmail: string;
+            companyPhone: string;
+            id: string;
+            createdAt: Date;
+        } | null;
+        name: string;
+        email: string;
+        phoneNumber: string;
+        id: string;
+        imgUrl: string | null;
+        companyId: string | null;
+        isVerified: boolean;
+        createdAt: Date;
+    }>;
+}
+export {};
